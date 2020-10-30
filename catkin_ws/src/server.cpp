@@ -66,7 +66,7 @@ uint16_t res_read_w_24;
 bool *test;
 uint16_t req_write_gent[11];
 
-uint16_t req_write_cmd = 0x00F2;
+uint64_t req_write_cmd = 0x00F2;
 uint16_t req_write_data_1 = 0x000A;
 uint16_t req_write_data_2 = 0x000B;
 uint16_t req_write_data_3 = 0x000C;
@@ -120,61 +120,74 @@ uint16_t WriteBit(uint16_t &Data, bool Status, int Pose)
 }
 
 int WriteOutputGent(int SocketIP, int OutputSet)
-{
-	req_write_gent[0] = req_write_cmd;
+{ 
+	req_write_gent[10] = req_write_cmd;
 
 	if (OutputSet == 1)
 	{
-		req_write_gent[1] = req_write_data_1;
-		req_write_gent[2] = 0;
-		req_write_gent[3] = 0;
-		req_write_gent[4] = 0;
+		req_write_gent[9] = req_write_data_1;
+		req_write_gent[8] = 0;
+		req_write_gent[7] = 0;
+		req_write_gent[6] = 0;
 		req_write_gent[5] = 0;
 	}
 	else if (OutputSet == 2)
 	{
-		req_write_gent[1] = 0;
-		req_write_gent[2] = req_write_data_2;
-		req_write_gent[3] = 0;
-		req_write_gent[4] = 0;
+		req_write_gent[9] = 0;
+		req_write_gent[8] = req_write_data_2;
+		req_write_gent[7] = 0;
+		req_write_gent[6] = 0;
 		req_write_gent[5] = 0;
 	}
 	else if (OutputSet == 3)
 	{
-		req_write_gent[1] = 0;
-		req_write_gent[2] = 0;
-		req_write_gent[3] = req_write_data_3;
-		req_write_gent[4] = 0;
+		req_write_gent[9] = 0;
+		req_write_gent[8] = 0;
+		req_write_gent[7] = req_write_data_3;
+		req_write_gent[6] = 0;
 		req_write_gent[5] = 0;
 	}
 	else if (OutputSet == 4)
 	{
-		req_write_gent[1] = 0;
-		req_write_gent[2] = 0;
-		req_write_gent[3] = 0;
-		req_write_gent[4] = req_write_data_4;
+		req_write_gent[9] = 0;
+		req_write_gent[8] = 0;
+		req_write_gent[7] = 0;
+		req_write_gent[6] = req_write_data_4;
 		req_write_gent[5] = 0;
 	}
 	else if (OutputSet == 5)
 	{
-		req_write_gent[1] = 0;
-		req_write_gent[2] = 0;
-		req_write_gent[3] = 0;
-		req_write_gent[4] = 0;
+		req_write_gent[9] = 0;
+		req_write_gent[8] = 0;
+		req_write_gent[7] = 0;
+		req_write_gent[6] = 0;
 		req_write_gent[5] = req_write_data_5;
 	}
 	else
 	{
 		/* code */
 	}
-	req_write_gent[6]=req_write_w_0;
-	req_write_gent[7]=req_write_w_1;
-	req_write_gent[8]=req_write_w_2;
-	req_write_gent[9]=req_write_w_3;
-	req_write_gent[10]=req_write_w_4;
-//	send(SocketIP, req_write_gent, 22, 0);
-static uint16_t h = 0x00f2;
-	send(SocketIP,h,2,0);
+	req_write_gent[4]=req_write_w_0;
+	req_write_gent[3]=req_write_w_1;
+	req_write_gent[2]=req_write_w_2;
+	req_write_gent[1]=req_write_w_3;
+	req_write_gent[0]=req_write_w_4;
+	send(SocketIP, req_write_gent, 22, 0);
+	bool ReadOk=0;
+	while (ReadOk)
+	{
+		read(SocketIP, res_write_gent, 4);
+		if (res_write_gent[3]==0x002F)
+		{
+			for()
+		}
+		
+
+		/* code */
+	}
+	
+
+	//send(SocketIP,(const void *)&req_write_cmd,4,0);
 	
 
 }
