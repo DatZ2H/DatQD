@@ -8,6 +8,59 @@
 #include <string.h>
 
 using namespace std;
+
+#define pose_read_data_cmd 0
+#define pose_read_data_1 1
+#define pose_read_data_2 2
+#define pose_read_data_3 3
+#define pose_read_data_4 4
+
+#define pose_read_data_cmd 0
+#define pose_read_data_1 1
+#define pose_read_data_2 2
+#define pose_read_data_3 3
+#define pose_read_data_4 4
+#define pose_read_w_0 5
+#define pose_read_w_1 6
+#define pose_read_w_2 7
+#define pose_read_w_3 8
+#define pose_read_w_4 9
+#define pose_read_w_5 10
+#define pose_read_w_6 11
+#define pose_read_w_7 12
+#define pose_read_w_8 13
+#define pose_read_w_9 14
+#define pose_read_w_10 15
+#define pose_read_w_11 16
+#define pose_read_w_12 17
+#define pose_read_w_13 18
+#define pose_read_w_14 19
+#define pose_read_w_15 20
+#define pose_read_w_16 21
+#define pose_read_w_17 22
+#define pose_read_w_18 23
+#define pose_read_w_19 24
+#define pose_read_w_20 25
+#define pose_read_w_21 26
+#define pose_read_w_22 27
+#define pose_read_w_23 28
+#define pose_read_w_24 29
+
+#define pose_write_cmd 0
+#define pose_write_data_1 1
+#define pose_write_data_2 2
+#define pose_write_data_3 3
+#define pose_write_data_4 4
+#define pose_write_data_5 5
+#define pose_write_w_0 6
+#define pose_write_w_1 7
+#define pose_write_w_2 8
+#define pose_write_w_3 9
+#define pose_write_w_4 10
+
+#define pose_write_cmd 0
+#define pose_write_status 1
+
 /*
 00F2
 000A0000000000000000
@@ -25,15 +78,15 @@ using namespace std;
 
 uint16_t req_read_gent[5];
 
-uint16_t req_read_data_cmd = 0x00F1;
-uint16_t req_read_data_1 = 0x0001;
-uint16_t req_read_data_2 = 0x0001;
-uint16_t req_read_data_3 = 0x0001;
-uint16_t req_read_data_4 = 0x0001;
+uint16_t req_read_data_cmd = 0xF100;
+uint16_t req_read_data_1 = 0x1000;
+uint16_t req_read_data_2 = 0x1000;
+uint16_t req_read_data_3 = 0x1000;
+uint16_t req_read_data_4 = 0x1000;
 
 uint16_t res_read_gent[30];
 
-uint16_t res_read_data_cmd = 0x001F;
+uint16_t res_read_data_cmd = 0x1F00;
 uint16_t res_read_data_1;
 uint16_t res_read_data_2;
 uint16_t res_read_data_3;
@@ -66,21 +119,21 @@ uint16_t res_read_w_24;
 bool *test;
 uint16_t req_write_gent[11];
 
-uint64_t req_write_cmd = 0x00F2;
-uint16_t req_write_data_1 = 0x000A;
-uint16_t req_write_data_2 = 0x000B;
-uint16_t req_write_data_3 = 0x000C;
-uint16_t req_write_data_4 = 0x000D;
-uint16_t req_write_data_5 = 0x000E;
-uint16_t req_write_w_0=0xA001;
-uint16_t req_write_w_1=0xA002;
-uint16_t req_write_w_2=0xA003;
-uint16_t req_write_w_3=0xA004;
-uint16_t req_write_w_4=0xA005;
+uint64_t req_write_cmd = 0xF200;
+uint16_t req_write_data_1 = 0xA000;
+uint16_t req_write_data_2 = 0xB000;
+uint16_t req_write_data_3 = 0xC000;
+uint16_t req_write_data_4 = 0xD000;
+uint16_t req_write_data_5 = 0xE000;
+uint16_t req_write_w_0 = 0x100A;
+uint16_t req_write_w_1 = 0x200A;
+uint16_t req_write_w_2 = 0x300A;
+uint16_t req_write_w_3 = 0x400A;
+uint16_t req_write_w_4 = 0x500A;
 
 uint16_t res_write_gent[2];
 
-uint16_t res_write_cmd = 0x002F;
+uint16_t res_write_cmd = 0x2F00;
 uint16_t res_write_status;
 
 #define PORT 80
@@ -120,76 +173,270 @@ uint16_t WriteBit(uint16_t &Data, bool Status, int Pose)
 }
 
 int WriteOutputGent(int SocketIP, int OutputSet)
-{ 
-	req_write_gent[10] = req_write_cmd;
+{
+	req_write_gent[pose_write_cmd] = req_write_cmd;
 
 	if (OutputSet == 1)
 	{
-		req_write_gent[9] = req_write_data_1;
-		req_write_gent[8] = 0;
-		req_write_gent[7] = 0;
-		req_write_gent[6] = 0;
-		req_write_gent[5] = 0;
+		req_write_gent[pose_write_data_1] = req_write_data_1;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = 0;
 	}
 	else if (OutputSet == 2)
 	{
-		req_write_gent[9] = 0;
-		req_write_gent[8] = req_write_data_2;
-		req_write_gent[7] = 0;
-		req_write_gent[6] = 0;
-		req_write_gent[5] = 0;
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = req_write_data_2;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = 0;
 	}
 	else if (OutputSet == 3)
 	{
-		req_write_gent[9] = 0;
-		req_write_gent[8] = 0;
-		req_write_gent[7] = req_write_data_3;
-		req_write_gent[6] = 0;
-		req_write_gent[5] = 0;
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = req_write_data_3;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = 0;
 	}
 	else if (OutputSet == 4)
 	{
-		req_write_gent[9] = 0;
-		req_write_gent[8] = 0;
-		req_write_gent[7] = 0;
-		req_write_gent[6] = req_write_data_4;
-		req_write_gent[5] = 0;
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = req_write_data_4;
+		req_write_gent[pose_write_data_5] = 0;
 	}
 	else if (OutputSet == 5)
 	{
-		req_write_gent[9] = 0;
-		req_write_gent[8] = 0;
-		req_write_gent[7] = 0;
-		req_write_gent[6] = 0;
-		req_write_gent[5] = req_write_data_5;
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = req_write_data_5;
 	}
 	else
 	{
 		/* code */
 	}
-	req_write_gent[4]=req_write_w_0;
-	req_write_gent[3]=req_write_w_1;
-	req_write_gent[2]=req_write_w_2;
-	req_write_gent[1]=req_write_w_3;
-	req_write_gent[0]=req_write_w_4;
+	req_write_gent[pose_write_w_0] = req_write_w_0;
+	req_write_gent[pose_write_w_1] = req_write_w_1;
+	req_write_gent[pose_write_w_2] = req_write_w_2;
+	req_write_gent[pose_write_w_3] = req_write_w_3;
+	req_write_gent[pose_write_w_4] = req_write_w_4;
 	send(SocketIP, req_write_gent, 22, 0);
-	bool ReadOk=0;
+	bool ReadOk = 1;
+	cout << " chuan bi roi ne " << endl;
 	while (ReadOk)
 	{
-		read(SocketIP, res_write_gent, 4);
-		if (res_write_gent[3]==0x002F)
+		cout << "doi tin nhan gent" << endl;
+		read(SocketIP, res_write_gent, 2);
+
+		cout << " gia tri nhan duoc ne " << res_write_gent << endl;
+		if (res_write_gent[0] == 0x2F00 && res_write_gent[1] == 0x0000)
 		{
-			for()
+			cout << "gui ok roi day" << endl;
+			ReadOk = 0;
+			break;
 		}
-		
 
 		/* code */
 	}
-	
 
 	//send(SocketIP,(const void *)&req_write_cmd,4,0);
-	
+}
+int WriteOutputGentBit(int SocketIP, int OutputSet, uint16_t Data0, uint16_t Data1, uint16_t Data2, uint16_t Data3, uint16_t Data4)
+{
+	req_write_gent[pose_write_cmd] = req_write_cmd;
 
+	if (OutputSet == 1)
+	{
+		req_write_gent[pose_write_data_1] = req_write_data_1;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = 0;
+	}
+	else if (OutputSet == 2)
+	{
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = req_write_data_2;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = 0;
+	}
+	else if (OutputSet == 3)
+	{
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = req_write_data_3;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = 0;
+	}
+	else if (OutputSet == 4)
+	{
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = req_write_data_4;
+		req_write_gent[pose_write_data_5] = 0;
+	}
+	else if (OutputSet == 5)
+	{
+		req_write_gent[pose_write_data_1] = 0;
+		req_write_gent[pose_write_data_2] = 0;
+		req_write_gent[pose_write_data_3] = 0;
+		req_write_gent[pose_write_data_4] = 0;
+		req_write_gent[pose_write_data_5] = req_write_data_5;
+	}
+	else
+	{
+		/* code */
+	}
+	req_write_gent[pose_write_w_0] = Data0;
+	req_write_gent[pose_write_w_1] = Data1;
+	req_write_gent[pose_write_w_2] = Data2;
+	req_write_gent[pose_write_w_3] = Data3;
+	req_write_gent[pose_write_w_4] = Data4;
+	send(SocketIP, req_write_gent, 22, 0);
+	bool ReadOk = 1;
+	cout << " chuan bi roi ne " << endl;
+	while (ReadOk)
+	{
+		cout << "doi tin nhan gent" << endl;
+		read(SocketIP, res_write_gent, 2);
+
+		//	cout << " gia tri nhan duoc ne " << res_write_gent << endl;
+		if (res_write_gent[0] == 0x2F00 && res_write_gent[1] == 0x0000)
+		{
+			cout << "gui ok roi day" << endl;
+			ReadOk = 0;
+			break;
+		}
+
+		/* code */
+	}
+}
+int ReadInputGent(int SocketIP, int InputRead)
+
+{
+	bool CheckSend = 0;
+	bool CheckRead = 0;
+	bool SendOk;
+	uint16_t temp[30];
+	req_read_gent[pose_read_data_cmd] = 0xF100;
+	if (InputRead == 1)
+	{
+		req_read_gent[pose_read_data_1] = req_read_data_1;
+		req_read_gent[pose_read_data_2] = 0;
+		req_read_gent[pose_read_data_3] = 0;
+		req_read_gent[pose_read_data_4] = 0;
+	}
+	else if (InputRead == 2)
+	{
+		req_read_gent[pose_read_data_1] = 0;
+		req_read_gent[pose_read_data_2] = req_read_data_2;
+		req_read_gent[pose_read_data_3] = 0;
+		req_read_gent[pose_read_data_4] = 0;
+	}
+	else if (InputRead == 3)
+	{
+		req_read_gent[pose_read_data_1] = 0;
+		req_read_gent[pose_read_data_2] = 0;
+		req_read_gent[pose_read_data_3] = req_read_data_3;
+		req_read_gent[pose_read_data_4] = 0;
+	}
+	else if (InputRead == 4)
+	{
+		req_read_gent[pose_read_data_1] = 0;
+		req_read_gent[pose_read_data_2] = 0;
+		req_read_gent[pose_read_data_3] = 0;
+		req_read_gent[pose_read_data_4] = req_read_data_4;
+	}
+	else
+	{
+		/* code */
+	}
+
+	CheckSend = send(SocketIP, req_read_gent, 10, 0);
+	for (size_t i = 0; i < 6; i++)
+	{
+		cout << "  Buffer" << i << " = " << req_read_gent[i];
+	}
+	cout << "send  xong roi ne" << endl;
+	cout << "---------------------------------------------" << endl;
+	if (CheckSend > 0)
+	{
+		SendOk = 1;
+		while (SendOk)
+		{
+			CheckRead = read(SocketIP, temp, 60);
+			if (CheckRead > 0)
+			{
+				if (temp[0] == 0x1F00 && temp[1] == 0x3200)
+				{
+					for (size_t i = 0; i < 30; i++)
+					{
+						res_read_gent[i] = temp[i];
+					}
+					res_read_data_cmd = res_read_gent[pose_read_data_cmd];
+					res_read_data_1 = res_read_gent[pose_read_data_1];
+					res_read_data_2 = res_read_gent[pose_read_data_2];
+					res_read_data_3 = res_read_gent[pose_read_data_3];
+					res_read_data_4 = res_read_gent[pose_read_data_4];
+					res_read_w_0 = res_read_gent[pose_read_w_0];
+					res_read_w_1 = res_read_gent[pose_read_w_1];
+					res_read_w_2 = res_read_gent[pose_read_w_2];
+					res_read_w_3 = res_read_gent[pose_read_w_3];
+					res_read_w_4 = res_read_gent[pose_read_w_4];
+					res_read_w_5 = res_read_gent[pose_read_w_5];
+					res_read_w_6 = res_read_gent[pose_read_w_6];
+					res_read_w_7 = res_read_gent[pose_read_w_7];
+					res_read_w_8 = res_read_gent[pose_read_w_8];
+					res_read_w_9 = res_read_gent[pose_read_w_9];
+					res_read_w_10 = res_read_gent[pose_read_w_10];
+					res_read_w_11 = res_read_gent[pose_read_w_11];
+					res_read_w_12 = res_read_gent[pose_read_w_12];
+					res_read_w_13 = res_read_gent[pose_read_w_13];
+					res_read_w_14 = res_read_gent[pose_read_w_14];
+					res_read_w_15 = res_read_gent[pose_read_w_15];
+					res_read_w_16 = res_read_gent[pose_read_w_16];
+					res_read_w_17 = res_read_gent[pose_read_w_17];
+					res_read_w_18 = res_read_gent[pose_read_w_18];
+					res_read_w_19 = res_read_gent[pose_read_w_19];
+					res_read_w_20 = res_read_gent[pose_read_w_20];
+					res_read_w_21 = res_read_gent[pose_read_w_21];
+					res_read_w_22 = res_read_gent[pose_read_w_22];
+					res_read_w_23 = res_read_gent[pose_read_w_23];
+					res_read_w_24 = res_read_gent[pose_read_w_24];
+					for (size_t i = 0; i < 30; i++)
+					{
+						cout << "Buffer" << i << " = " << res_read_gent[i] << endl;
+					}
+					cout << "read xong roi ne" << endl;
+					cout << "---------------------------------------------" << endl;
+					/* 			for (size_t i = 0; i < 24; i++)
+			{
+				cout << "res_read_gent " << i << " = " << res_read_gent[i] << endl;
+			} */
+					break;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	}
+	else
+	{
+		return 0;
+	}
+}
+int ReadInputGentBit(int SocketIP, int InputRead)
+{
+	//ReadInputGent(SocketIP,InputRead);
 }
 int Bin2DecWord(int n)
 {
@@ -208,9 +455,7 @@ int Bin2DecWord(int n)
 
 int main(int argc, char const *argv[])
 {
-	uint16_t h = 11;
-	cout << "day la gia tri write =  " << WriteBit(h, 0, 1) << endl;
-	cout << " gia tri cua H ===  == " << h << endl;
+
 	int server_fd, new_socket, valread;
 	struct sockaddr_in address;
 	int opt = 1;
@@ -251,36 +496,16 @@ int main(int argc, char const *argv[])
 		perror("accept");
 		exit(EXIT_FAILURE);
 	}
-	uint16_t k = 17732;
-
-	test = Dec2BinWord(k);
-	for (size_t i = 0; i < 16; i++)
-	{
-		cout << "bit thu " << i << " : " << test[i] << endl;
-	}
-	Bin2DecWord(10101);
-
 	while (1)
 	{
-		valread = read(new_socket, buffer, 10);
-		cout << "day la buffer " << hex << buffer << endl;
-		/* 	cout<<"buffer 0 : "<<buffer[0]<<endl;
-	cout<<"buffer 1 : "<<buffer[1]<<endl;
-	cout<<"buffer 2 : "<<buffer[2]<<endl;
-	cout<<"buffer 3 : "<<buffer[3]<<endl;
-	cout<<"buffer 4 : "<<buffer[4]<<endl; */
-		for (int i = 0; i < 5; i++)
-		{
-			cout << "buffer " << i << " :aaa " << buffer[i] << endl;
-			if (buffer[i] == 17732)
-			{
-				break;
-			}
-		}
-
-		cout << "------------- : " << endl;
-		WriteOutputGent(new_socket,1);
+		WriteOutputGent(new_socket, 1);
+		ReadInputGent(new_socket, 1);
 	}
 
+	//WriteOutputGent(new_socket, 1);
+	//WriteOutputGent(new_socket, 1);
+
+	/* 	}
+ */
 	return 0;
 }
